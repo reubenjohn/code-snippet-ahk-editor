@@ -6,14 +6,14 @@ from modes import leetcode_editor
 
 
 def print_help():
-    print('test.py -i <inputfile> -o <outputfile> -m <mode>', file=sys.stderr)
+    print('test.py -i <inputfile> -o <outputfile> -m <mode> -k <autohotkey-keyboard-shortcut>', file=sys.stderr)
     print('Supported <mode>: leetcode-editor', file=sys.stderr)
 
 
 def main(argv):
-    input_path = output_path = mode = ''
+    input_path = output_path = mode = shortcut = ''
     try:
-        opts, args = getopt.getopt(argv, "hi:o:m:", ["ifile=", "ofile=", "mode="])
+        opts, args = getopt.getopt(argv, "hi:o:m:k:", ["ifile=", "ofile=", "mode=", "keyboard-shortcut="])
         if any((arg not in [opt[0] for opt in opts]) for arg in ['-i', '-o', '-m']):
             raise getopt.GetoptError('Missing argument')
     except getopt.GetoptError:
@@ -29,17 +29,20 @@ def main(argv):
             output_path = Path(arg)
         elif opt in ("-m", "--mode"):
             mode = arg
+        elif opt in ("-k", "--keyboard-shortcut"):
+            shortcut = arg
 
     print(f'Input file: "{input_path}"')
     print(f'Output file: "{output_path}"')
     print(f'Mode: "{mode}"')
+    print(f'Shortcut: "{shortcut}"')
 
     if mode == leetcode_editor.MODE_IDENTIFIER:
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
         with open(input_path) as input_file:
             with open(output_path, "w") as output_file:
-                leetcode_editor.process(input_file, output_file)
+                leetcode_editor.process(input_file, output_file, shortcut)
 
 
 if __name__ == "__main__":

@@ -2,7 +2,6 @@
         DNode parent;
         int data;
         int height = 1;
-        int size = 1;
         DNode(int data) {
             this.data = data;
         }
@@ -23,12 +22,10 @@
             if(xRoot.height >= yRoot.height) {
                 xRoot.parent = yRoot;
                 yRoot.height = Math.max(yRoot.height, xRoot.height + 1);
-                yRoot.size += xRoot.size;
                 return yRoot;
             } else {
                 yRoot.parent = xRoot;
                 xRoot.height = Math.max(xRoot.height, yRoot.height + 1);
-                xRoot.size += yRoot.size;
                 return xRoot;
             }
         }
