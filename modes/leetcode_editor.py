@@ -18,7 +18,7 @@ def zip_line_pairs(lines: [str]):
     yield prev, None
 
 
-def process(input_file: typing.IO, output: typing.IO, shortcut: str):
+def process(input_file: typing.IO, output: typing.IO, name: str):
     lines = input_file.readlines()
 
     output.write(f"""#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
@@ -27,35 +27,8 @@ def process(input_file: typing.IO, output: typing.IO, shortcut: str):
 SendMode Event  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-rand_gaussian(mean, standard_deviation)
+type_code_snippet_{name}(mean, std)
 {{
-	max_random = 10000000
-	Random, r1, 1, max_random ; 1 to prevent inf error
-	Random, r2, 1, max_random
-	Return mean + standard_deviation * Sqrt(-2 * Ln(r1 / max_random)) * Cos(2 * 3.14159265 * (r2 / max_random))
-}}
-
-Escape::GoTo, OnStop
-RCtrl & `::GoTo, MatchShortcut
-
-MatchShortcut:
-Input userKeys, L2
-if (userKeys == "{shortcut}") {{
-	GoTo, CMD
-}} else {{
-	Reload
-}}
-
-return
-
-OnStop:
-Send, {{Shift Up}}
-Send, {{Ctrl Up}}
-Send, {{Alt Up}}
-Reload
-return
-
-CMD:
 """)
 
     for curr, nxt in zip_line_pairs(lines):
@@ -77,9 +50,7 @@ CMD:
         if nxt is not None and not nxt_stripped.startswith('}'):
             output.write(f'Send, {{Enter}}{os.linesep}')
 
-    output.write("""
-return
-
+    output.write("""}
 """)
 
 
