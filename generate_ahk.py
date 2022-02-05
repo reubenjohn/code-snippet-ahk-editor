@@ -10,6 +10,15 @@ def print_help():
     print('Supported <mode>: leetcode-editor', file=sys.stderr)
 
 
+def generate(input_path, output_path, mode, shortcut):
+    if mode == leetcode_editor.MODE_IDENTIFIER:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+
+        with open(input_path) as input_file:
+            with open(output_path, "w") as output_file:
+                leetcode_editor.process(input_file, output_file, shortcut)
+
+
 def main(argv):
     input_path = output_path = mode = shortcut = ''
     try:
@@ -37,12 +46,7 @@ def main(argv):
     print(f'Mode: "{mode}"')
     print(f'Shortcut: "{shortcut}"')
 
-    if mode == leetcode_editor.MODE_IDENTIFIER:
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-
-        with open(input_path) as input_file:
-            with open(output_path, "w") as output_file:
-                leetcode_editor.process(input_file, output_file)
+    generate(input_path, output_path, mode, shortcut)
 
 
 if __name__ == "__main__":

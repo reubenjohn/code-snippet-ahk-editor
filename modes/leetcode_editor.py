@@ -40,7 +40,6 @@ RCtrl & `::GoTo, MatchShortcut
 
 MatchShortcut:
 Input userKeys, L2
-; TrayTip, %userKeys%, %userKeys%
 if (userKeys == "{shortcut}") {{
 	GoTo, CMD
 }} else {{
