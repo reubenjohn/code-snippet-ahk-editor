@@ -42,7 +42,7 @@ def main(argv):
 
         with open(input_path) as input_file:
             with open(output_path, "w") as output_file:
-                leetcode_editor.process(input_file, output_file, shortcut)
+                leetcode_editor.process(input_file, output_file)
 
 
 if __name__ == "__main__":
