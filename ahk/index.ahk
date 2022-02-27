@@ -11,14 +11,14 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 mean := 311 / 4
 std = 152 / 4
 
-Escape::abort_typing_code_snippet()
-^!i::match_shortcut()
+!Escape::abort_typing_code_snippet()
+^!i::match_shortcut(mean, std)
 
-match_shortcut() {
+match_shortcut(mean, std) {
     Input userKeys, L2
     switch (userKeys) {
-        case "pl": type_code_snippet_println(%mean%, %std%) return
-        case "pf": type_code_snippet_println_format(%mean%, %std%) return
+        case "pl": type_code_snippet_println(mean, std) return
+        case "pf": type_code_snippet_println_format(mean, std) return
     }
 }
 

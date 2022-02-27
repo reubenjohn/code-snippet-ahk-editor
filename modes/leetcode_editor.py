@@ -27,13 +27,18 @@ def process(input_file: typing.IO, output: typing.IO, name: str):
 SendMode Event  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-type_code_snippet_{name}(mean, std)
+get_code_snippet_{name}()
 {{
 """)
 
+    keys = []
+
+    def add_key(key: str):
+        keys.append(f'"{key}"')
+
     for curr, nxt in zip_line_pairs(lines):
         if curr == '\n':
-            output.write(f'Send, {{Enter}}{os.linesep}')
+            add_key("{Enter}")
             continue
 
         curr_stripped = curr.strip()
@@ -41,19 +46,23 @@ type_code_snippet_{name}(mean, std)
         if len(curr_stripped) == 0: continue
         for c in curr_stripped:
             if c == ' ':
-                delay_and_type(output, '{Space}')
+                add_key('{Space}')
             elif c == '}':
-                delay_and_type(output, '{Down}{End}')
+                add_key('{Down}{End}')
+            elif c == '"':
+                add_key('""')
             else:
-                delay_and_type(output, f"{{{c}}}")
+                add_key(f"{{{c}}}")
 
         if nxt is not None and not nxt_stripped.startswith('}'):
-            output.write(f'Send, {{Enter}}{os.linesep}')
+            add_key("{Enter}")
 
-    output.write("""}
+    partition_size = 10
+    arrays = [keys[i:i + partition_size] for i in range(len(keys))[::partition_size]]
+    concatenations = "\n".join([f"    arr.push([{', '.join(arr)}]*)" for (idx, arr) in enumerate(arrays)])
+
+    output.write(f"""    arr := []
+{concatenations}
+    Return arr
+}}
 """)
-
-
-def delay_and_type(output: typing.IO, key: str):
-    output.write(f'Sleep, rand_gaussian(mean, std){os.linesep}')
-    output.write(f'Send, {key}{os.linesep}')
