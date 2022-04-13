@@ -27,3 +27,5 @@ This will allow you to insert the code snippets configured in the index.ahk file
 3. Now, you can insert one character at a time by pressing any of the function keys in any order. For example, `F1`, `F4`, etc.
 4. Once the snippet reaches completion, the function keys will restore their original functionality in a few seconds.
 5. You can abort at any time with `Ctrl+Shift+Esc`
+
+You may customize this functionality by modifying the index.ahk file.
