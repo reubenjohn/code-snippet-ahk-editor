@@ -30,5 +30,3 @@
   -i samples/java/countingSort.java\
   -o output/java/countingSort.ahk\
   -m leetcode-editor -n 'countingSort'
-
-cp -r output/java/. /mnt/c/Users/reube/OneDrive/Documents/Macros/code_snippets/java/
